@@ -1,38 +1,238 @@
-.App {
-  text-align: center;
+:root {
+  /* theme1 */
+
+  /* background color */
+  --main-background1: hsl(222, 26%, 31%);
+  --toggle-background1: hsl(223, 31%, 20%);
+  --keypad-background1: hsl(223, 31%, 20%);
+  --screen-background1: hsl(224, 36%, 15%);
+
+  --key11-background: hsl(225, 21%, 49%);
+  --key11-shadow: hsl(224, 28%, 35%);
+
+  --key12-background: hsl(6, 63%, 50%);
+  --toggle1: hsl(6, 63%, 50%);
+  --key12-shadow: hsl(6, 70%, 34%);
+
+  --key13-background: hsl(30, 25%, 89%);
+  --key13-shadow: hsl(28, 16%, 65%);
+
+  /* Text Color */
+  --dark-grayish-blue: hsl(221, 14%, 31%);
+  --white: hsl(0, 0%, 100%);
+
+  /* Theme 2 */
+  /* background color */
+  --main-background2: hsl(0, 0%, 90%);
+  --toggle-background2: hsl(0, 5%, 81%);
+  --keypad-background2: hsl(0, 5%, 81%);
+  --screen-background2: hsl(0, 0%, 93%);
+
+  --key21-background: hsl(185, 42%, 37%);
+  --key21-shadow: hsl(185, 58%, 25%);
+
+  --key22-background: hsl(25, 98%, 40%);
+  --toggle2: hsl(25, 98%, 40%);
+  --key22-shadow: hsl(25, 99%, 27%);
+
+  --key23-background: hsl(45, 7%, 89%);
+  --key23-shadow: hsl(35, 11%, 61%);
+  /* Text Color */
+  --dark-grayish-yellow: hsl(60, 10%, 19%);
+  --white: hsl(0, 0%, 100%);
+
+  /* Theme 3 */
+  /* background color */
+  --main-background3: hsl(268, 75%, 9%);
+  --toggle-background3: hsl(268, 71%, 12%);
+  --keypad-background3: hsl(268, 71%, 12%);
+  --screen-background3: hsl(268, 71%, 12%);
+
+  --key31-background: hsl(281, 89%, 26%);
+  --key31-shadow: hsl(285, 91%, 52%);
+
+  --key32-background: hsl(176, 100%, 44%);
+  --toggle3: hsl(176, 100%, 44%);
+  --key32-shadow: hsl(177, 92%, 70%);
+
+  --key33-background: hsl(268, 47%, 21%);
+  --key33-shadow: hsl(290, 70%, 36%);
+  /* Text Color */
+  --dark-grayish-yellow: hsl(52, 100%, 62%);
+  --very-dark-blue: hsl(198, 20%, 13%);
+  --white: hsl(0, 0%, 100%);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@media (min-width: 375px) {
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100vw;
+    /* font-family: 'League Spartan'; */
+    font-size: 32px;
+    font-weight: 700;
   }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  .calc_container {
+    width: 100%;
+    margin: 0 auto;
+    background: var(--main-background1);
   }
-  to {
-    transform: rotate(360deg);
+
+  .calc_container .calc_content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: inherit;
+    margin: 0 1rem;
+  }
+
+  .calc_container .calc_content .calc_main_content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .home_title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem auto;
+    color: var(--white);
+    width: 100%;
+    height: 50px;
+  }
+
+  .home_title .left_home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: inherit;
+    font-size: 14px;
+  }
+  .home_title .right_home {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    height: inherit;
+    font-size: 12px;
+  }
+
+  .home_title .right_home .theme {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+  }
+
+  .home_title .right_home .toggle_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    gap: 0.25rem;
+  }
+
+  .toggle_box .numeric_symbol_theme {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .toggle_box .toggle {
+    position: relative;
+    width: 90px;
+    height: 42px;
+    cursor: pointer;
+    background: var(--toggle-background1);
+    border-radius: 24px;
+  }
+
+  .toggle_box .toggle .circle {
+    position: relative;
+    top: 0;
+    left: 3px;
+    width: 39px;
+    height: 39px;
+    background: var(--toggle1);
+    border-radius: 50%;
+    /* z-index: 3; */
+  }
+
+  .result_container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: right;
+    background: var(--screen-background1);
+    color: var(--white);
+    /* margin: 1rem auto; */
+    width: 100%;
+  }
+
+  .button_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background: var(--keypad-background1);
+  }
+
+  .button_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: repeat(5, 1fr);
+    width: 100%;
+    margin: 1rem auto;
+    gap: 0.35rem;
+  }
+
+  .button_grid :nth-child(17) {
+    display: grid;
+    grid-column: 1 / span 2;
+    grid-row: 5;
+  }
+
+  .button_grid :last-child {
+    display: grid;
+    grid-column: 3 / span 2;
+    grid-row: 5;
+  }
+
+  .single_btn {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    color: var(--dark-grayish-blue);
+    border-radius: 5px;
+    box-shadow: 0px 0px 8px var(--key13-shadow);
+  }
+
+  .dual_btn {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+  }
+
+  .single_btn.btn_del {
+    color: var(--key11-background);
+    box-shadow: 0px 0px 8px var(--key11-shadow);
+  }
+  .dual_btn.btn_reset {
+    color: var(--key11-background);
+    box-shadow: 0px 0px 8px var(--key11-shadow);
+  }
+  .dual_btn.btn_result {
+    color: var(--key12-background);
+    box-shadow: 0px 0px 8px var(--key12-shadow);
   }
 }
