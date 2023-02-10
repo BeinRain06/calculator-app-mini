@@ -57,156 +57,212 @@ class CalculatorPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstNumber: "",
-      secondNumber: "",
+      previousNumber: "",
+      currentNumber: "",
       result: 0,
-      isSignClicked: 0,
-      isSignEqualClicked: false,
-      isOurSign: [false, false, false, false],
+      isOperatingSignClicked: false,
+      isEqualClicked: false,
+      isStatusOperation: 0,
+      deleteCasePreviousNumber: true,
+      deleteCaseCurrentNumber: false,
+      noOPValidedAgain: false,
     };
 
-    this.handleKeyDisplayNumber = this.handleKeyDisplayNumber.bind(this);
+    this.updateAndDisplayNumber = this.updateAndDisplayNumber.bind(this);
 
-    this.handleResult = this.handleResult.bind(this);
+    this.handleOperation = this.handleOperation.bind(this);
 
-    this.handleAddition = this.handleAddition.bind(this);
+    this.expectReset = this.expectReset.bind(this);
 
-    this.handleSoustraction = this.handleSoustraction.bind(this);
-
-    this.handleMultiplication = this.handleMultiplication.bind(this);
-
-    this.handleDivision = this.handleDivision.bind(this);
-
-    this.handleResult = this.handleResult.bind(this);
-
-    this.handleReset = this.handleReset.bind(this);
+    this.giveUsResult = this.giveUsResult.bind(this);
 
     this.handleDeletion = this.handleDeletion.bind(this);
+
+    this.handleReset = this.handleReset.bind(this);
   }
 
-  handleResult() {
-    this.currentStateSet();
-    if (this.state.isSignClicked === 2) {
-      for (let i = 0; i < 4; i++) {
-        if (this.state.isOurSign[i]) {
-          let j = i;
-          if (j === 0) {
-            this.setState({
-              result:
-                parseFloat(this.state.firstNumber) +
-                parseFloat(this.state.secondNumber),
-            });
-          } else if (j === 1) {
-            this.setState({
-              result:
-                parseFloat(this.state.firstNumber) -
-                parseFloat(this.state.secondNumber),
-            });
-          } else if (j === 2) {
-            this.setState({
-              result:
-                parseFloat(this.state.firstNumber) *
-                parseFloat(this.state.secondNumber),
-            });
-          } else if (j === 3) {
-            this.setState({
-              result:
-                parseFloat(this.state.firstNumber) /
-                parseFloat(this.state.secondNumber),
-            });
-          }
-        }
-      }
-    }
-    console.log(this.state.result);
-  }
-
-  handleKeyDisplayNumber(e) {
-    e.preventDefault();
-    if (this.state.isSignClicked === 0) {
-      if ((e.target.className = "single_btn")) {
-        this.setState({
-          firstNumber: this.state.firstNumber.concat(e.target.value),
-          result: parseFloat(this.state.firstNumber + e.target.value),
-        });
-      }
-    } else if (this.state.isSignClicked === 1) {
-      if ((e.target.className = "single_btn")) {
-        this.setState({
-          secondNumber: this.state.secondNumber.concat(e.target.value),
-          result: parseFloat(this.state.secondNumber + e.target.value),
-        });
-        console.log(this.state.result);
-      }
-    }
-  }
-
-  handleDeletion() {
-    if (!this.state.isSignClicked && !this.state.isSignEqualClicked) {
-      this.setState({
-        firstNumber: this.state.firstNumber.slice(0, -1),
-        result: parseFloat(this.state.result.slice(0)),
-      });
-    } else if (this.state.isSignClicked && !this.state.isSignEqualClicked) {
-      this.setState({
-        secondNumber: this.state.secondNumber.slice(0, -1),
-        result: parseFloat(this.state.secondNumber),
-      });
+  expectReset() {
+    if (this.state.noOPValidedAgain) {
+      return;
     }
   }
 
   handleReset() {
     this.setState({
-      firstNumber: "",
-      secondNumber: "",
+      previousNumber: "",
+      currentNumber: "",
       result: 0,
-      isSignClicked: 0,
-      isSignEqualClicked: false,
-      isOurSign: [false, false, false, false],
+      isOperatingSignClicked: false,
+      isEqualClicked: false,
+      isStatusOperation: [false, false, false, false],
+      noOPValidedAgain: false,
+      deleteCasePreviousNumber: true,
+      deleteCaseCurrentNumber: false,
     });
   }
 
-  previousStateSet = () => {
-    this.setState({
-      firstNumber: this.state.firstNumber.slice(0, -1),
-      isSignClicked: 1,
-    });
-  };
+  updateAndDisplayNumber(e) {
+    this.expectReset();
 
-  currentStateSet = () => {
-    this.setState({
-      secondNumber: this.state.result.toString(),
-      isSignClicked: 2,
-    });
-  };
-
-  handleAddition(e) {
-    this.previousStateSet();
-    this.setState({
-      isOurSign: [true, false, false, false],
-    });
-    console.log(this.state.firstNumber);
+    if (e.target.className === "single_btn btn_number") {
+      if (!this.state.isOperatingSignClicked) {
+        this.setState({
+          previousNumber: this.state.previousNumber.concat(e.target.value),
+          result: parseFloat(this.state.previousNumber.concat(e.target.value)),
+        });
+      } else if (this.state.isOperatingSignClicked) {
+        this.setState({
+          currentNumber: this.state.currentNumber.concat(e.target.value),
+          result: parseFloat(this.state.currentNumber.concat(e.target.value)),
+        });
+      }
+    }
   }
 
-  handleSoustraction(e) {
-    this.previousStateSet();
-    this.setState({
-      isOurSign: [false, true, false, false],
-    });
+  handleOperation(e) {
+    this.expectReset();
+
+    let j = e.target.value;
+    console.log(e.target.value);
+    console.log(this.state.previousNumber);
+
+    if (this.state.currentNumber === "") {
+      if (j === "+") {
+        this.setState({
+          isStatusOperation: [true, false, false, false],
+          previousNumber: this.state.previousNumber,
+          isOperatingSignClicked: true,
+          deleteCaseCurrentNumber: true,
+        });
+      } else if (j === "-") {
+        this.setState({
+          isStatusOperation: [false, true, false, false],
+          previousNumber: this.state.previousNumber,
+          isOperatingSignClicked: true,
+          deleteCaseCurrentNumber: true,
+        });
+      } else if (j === "x") {
+        this.setState({
+          isStatusOperation: [false, false, true, false],
+          previousNumber: this.state.previousNumber,
+          isOperatingSignClicked: true,
+          deleteCaseCurrentNumber: true,
+        });
+      } else if (j === "/") {
+        this.setState({
+          isStatusOperation: [false, false, false, true],
+          previousNumber: this.state.previousNumber,
+          isOperatingSignClicked: true,
+          deleteCaseCurrentNumber: true,
+        });
+      }
+    } else if (this.state.currentNumber !== "") {
+      if (j === "+") {
+        this.setState({
+          isStatusOperation: [true, false, false, false],
+          previousNumber: this.state.result.toString(),
+          currentNumber: "",
+        });
+      } else if (j === "-") {
+        this.setState({
+          isStatusOperation: [false, true, false, false],
+          previousNumber: this.state.result.toString(),
+          currentNumber: "",
+        });
+      } else if (j === "x") {
+        this.setState({
+          isStatusOperation: [false, false, true, false],
+          previousNumber: this.state.result.toString(),
+          currentNumber: "",
+        });
+      } else if (j === "/") {
+        this.setState({
+          isStatusOperation: [false, false, false, true],
+          previousNumber: this.state.result.toString(),
+          currentNumber: "",
+        });
+      }
+    }
   }
 
-  handleMultiplication(e) {
-    this.previousStateSet();
-    this.setState({
-      isOurSign: [false, false, true, false],
-    });
+  handleDeletion() {
+    if (
+      this.state.deleteCasePreviousNumber === true &&
+      this.state.deleteCaseCurrentNumber === false
+    ) {
+      if (this.state.previousNumber === "") {
+        return;
+      }
+      this.setState({
+        previousNumber: this.state.previousNumber.slice(0, -1),
+        result: parseFloat(this.state.previousNumber.slice(0, -1)),
+      });
+      console.log(parseFloat(this.state.previousNumber.slice(0, -1)));
+    } else if (
+      this.state.deleteCasePreviousNumber === true &&
+      this.state.deleteCaseCurrentNumber === true
+    ) {
+      if (this.state.noOPValidedAgain === true) {
+        return;
+      }
+      this.setState({
+        currentNumber: this.state.currentNumber.slice(0, -1),
+        result: parseFloat(this.state.currentNumber.slice(0, -1)),
+      });
+    }
   }
 
-  handleDivision(e) {
-    this.previousStateSet();
-    this.setState({
-      isOurSign: [false, false, false, true],
-    });
+  giveUsResult() {
+    this.expectReset();
+
+    if (
+      this.state.isOperatingSignClicked === true &&
+      this.state.noOPValidedAgain === false
+    ) {
+      let j;
+
+      for (let i = 0; i < 4; i++) {
+        if (this.state.isStatusOperation[i] === true) {
+          j = i;
+        }
+      }
+      switch (j) {
+        case 0:
+          this.setState({
+            result:
+              parseFloat(this.state.previousNumber) +
+              parseFloat(this.state.currentNumber),
+            noOPValidedAgain: true,
+          });
+          break;
+        case 1:
+          this.setState({
+            result:
+              parseFloat(this.state.previousNumber) -
+              parseFloat(this.state.currentNumber),
+            noOPValidedAgain: true,
+          });
+          break;
+        case 2:
+          this.setState({
+            result:
+              parseFloat(this.state.previousNumber) *
+              parseFloat(this.state.currentNumber),
+            noOPValidedAgain: true,
+          });
+          break;
+        case 3:
+          this.setState({
+            result:
+              parseFloat(this.state.previousNumber) /
+              parseFloat(this.state.currentNumber),
+            noOPValidedAgain: true,
+          });
+          break;
+        default:
+          console.log("Something get wrong! Can't compute the result.");
+      }
+    }
   }
 
   render() {
@@ -216,48 +272,93 @@ class CalculatorPanel extends React.Component {
           <p className="result">{this.state.result}</p>
         </div>
 
-        <div className="button_container" onClick={this.handleKeyDisplayNumber}>
-          <div className="button_grid">
-            <input type="button" value="7" className="single_btn" />
-            <input type="button" value="8" className="single_btn" />
-            <input type="button" value="9" className="single_btn" />
+        <div className="button_container" onClick={this.updateAndDisplayNumber}>
+          <div className="button_grid" onClick={this.handleOperation}>
+            <input
+              type="button"
+              value="7"
+              className="single_btn btn_number"
+              data-number
+            />
+            <input
+              type="button"
+              value="8"
+              className="single_btn btn_number"
+              data-number
+            />
+            <input
+              type="button"
+              value="9"
+              className="single_btn btn_number"
+              data-number
+            />
             <input
               type="button"
               value="DEL"
               className="single_btn btn_del"
               onClick={this.handleDeletion}
             />
-            <input type="button" value="4" className="single_btn" />
-            <input type="button" value="5" className="single_btn" />
-            <input type="button" value="6" className="single_btn" />
+            <input
+              type="button"
+              value="4"
+              className="single_btn btn_number"
+              data-number
+            />
+            <input
+              type="button"
+              value="5"
+              className="single_btn btn_number"
+              data-number
+            />
+            <input
+              type="button"
+              value="6"
+              className="single_btn btn_number"
+              data-number
+            />
             <input
               type="button"
               value="+"
-              className="single_btn symbol"
-              onClick={this.handleAddition}
+              className="single_btn btn_operating"
+              data-operation
             />
-            <input type="button" value="1" className="single_btn" />
-            <input type="button" value="2" className="single_btn" />
-            <input type="button" value="3" className="single_btn" />
+            <input
+              type="button"
+              value="1"
+              className="single_btn btn_number"
+              data-number
+            />
+            <input type="button" value="2" className="single_btn btn_number" />
+            <input
+              type="button"
+              value="3"
+              className="single_btn btn_number"
+              data-number
+            />
             <input
               type="button"
               value="-"
-              className="single_btn symbol"
-              onClick={this.handleSoustraction}
+              className="single_btn btn_operating"
+              data-operation
             />
             <input type="button" value="." className="single_btn" />
-            <input type="button" value="0" className="single_btn" />
+            <input
+              type="button"
+              value="0"
+              className="single_btn btn_number"
+              data-number
+            />
             <input
               type="button"
               value="/"
-              className="single_btn symbol"
-              onClick={this.handleDivision}
+              className="single_btn btn_operating"
+              data-operation
             />
             <input
               type="button"
               value="x"
-              className="single_btn symbol"
-              onClick={this.handleMultiplication}
+              className="single_btn btn_operating"
+              data-operation
             />
             <input
               type="button"
@@ -269,7 +370,7 @@ class CalculatorPanel extends React.Component {
               type="button"
               value="="
               className="dual_btn btn_result"
-              onClick={this.handleResult}
+              onClick={this.giveUsResult}
             />
           </div>
         </div>
