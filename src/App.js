@@ -1,58 +1,6 @@
 import React from "react";
 import "./App.css";
 
-class CalculatorLabel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tmpTheme: "",
-    };
-  }
-
-  activateANewTheme = () => {
-    if (this.props.themeCalc[0]) {
-      this.setState({
-        tmpTheme: "toggle addTheme-2",
-      });
-    } else if (this.props.themeCalc[1]) {
-      this.setState({
-        tmpTheme: "toggle addTheme-3",
-      });
-    } else if (this.props.themeCalc[2]) {
-      this.setState({
-        tmpTheme: "toggle",
-      });
-    }
-  };
-
-  render() {
-    return (
-      <div className="home_title">
-        <div className="left_home">
-          <h3 className="logo">Calc</h3>
-        </div>
-        <div className="right_home">
-          <span className="theme">THEME</span>
-          <div className="toggle_box">
-            <div className="numeric_symbol_theme">
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-            </div>
-            <div
-              id="toggle"
-              className={this.state.tmpTheme}
-              onClick={this.activateANewTheme}
-            >
-              <div className="circle"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
 class CalculatorPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -268,109 +216,124 @@ class CalculatorPanel extends React.Component {
   render() {
     return (
       <div className="calc_main_content">
-        <div className="result_container">
+        <div
+          className="result_container"
+          data-result-container={this.props.dataResultContainer}
+        >
           <p className="result">{this.state.result}</p>
         </div>
 
-        <div className="button_container" onClick={this.updateAndDisplayNumber}>
+        <div
+          className="button_container"
+          onClick={this.updateAndDisplayNumber}
+          data-btn-container={this.props.dataButtonContainer}
+        >
           <div className="button_grid" onClick={this.handleOperation}>
             <input
               type="button"
               value="7"
               className="single_btn btn_number"
-              data-number
+              data-number={this.props.dataNumber}
             />
             <input
               type="button"
               value="8"
               className="single_btn btn_number"
-              data-number
+              data-number={this.props.dataNumber}
             />
             <input
               type="button"
               value="9"
               className="single_btn btn_number"
-              data-number
+              data-number={this.props.dataNumber}
             />
             <input
               type="button"
               value="DEL"
               className="single_btn btn_del"
               onClick={this.handleDeletion}
+              data-delete={this.props.dataDelete}
             />
             <input
               type="button"
               value="4"
               className="single_btn btn_number"
-              data-number
+              data-number={this.props.dataNumber}
             />
             <input
               type="button"
               value="5"
               className="single_btn btn_number"
-              data-number
+              data-number={this.props.dataNumber}
             />
             <input
               type="button"
               value="6"
               className="single_btn btn_number"
-              data-number
+              data-number={this.props.dataNumber}
             />
             <input
               type="button"
               value="+"
               className="single_btn btn_operating"
-              data-operation
+              data-operation={this.props.dataOperation}
             />
             <input
               type="button"
               value="1"
               className="single_btn btn_number"
-              data-number
+              data-number={this.props.dataNumber}
             />
             <input type="button" value="2" className="single_btn btn_number" />
             <input
               type="button"
               value="3"
               className="single_btn btn_number"
-              data-number
+              data-number={this.props.dataNumber}
             />
             <input
               type="button"
               value="-"
               className="single_btn btn_operating"
-              data-operation
+              data-operation={this.props.dataOperation}
             />
-            <input type="button" value="." className="single_btn" />
+            <input
+              type="button"
+              value="."
+              className="single_btn btn_number"
+              data-number={this.props.dataNumber}
+            />
             <input
               type="button"
               value="0"
               className="single_btn btn_number"
-              data-number
+              data-number={this.props.dataNumber}
             />
             <input
               type="button"
               value="/"
               className="single_btn btn_operating"
-              data-operation
+              data-operation={this.props.dataOperation}
             />
             <input
               type="button"
               value="x"
               className="single_btn btn_operating"
-              data-operation
+              data-operation={this.props.dataOperation}
             />
             <input
               type="button"
               value="RESET"
               className="dual_btn btn_reset"
               onClick={this.handleReset}
+              data-reset={this.props.dataReset}
             />
             <input
               type="button"
               value="="
               className="dual_btn btn_result"
               onClick={this.giveUsResult}
+              data-result={this.props.dataNumber}
             />
           </div>
         </div>
@@ -378,19 +341,53 @@ class CalculatorPanel extends React.Component {
     );
   }
 }
+
+function CalculatorLabel(props) {
+  return (
+    <div className="home_title">
+      <div className="left_home">
+        <h3 className="logo">Calc</h3>
+      </div>
+      <div className="right_home">
+        <span className="theme">THEME</span>
+        <div className="toggle_box">
+          <div className="numeric_symbol_theme">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+          </div>
+          <div id="toggle" className="toggle" data-toggle={props.dataToggle}>
+            <div className="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 class Calculator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isOurTheme: [true, false, false],
+      tmpTheme: "toggle",
+      dataToggle: "0",
+      dataReset: "0",
+      dataResult: "0",
+      dataDelete: "0",
+      dataOperation: "0",
+      dataNumber: "0",
+      dataResultContainer: "0",
+      dataButtonContainer: "0",
     };
     this.handleTheme = this.handleTheme.bind(this);
   }
 
   handleTheme(e) {
     e.preventDefault();
+    console.log(e.target);
 
-    if ((e.target.id = "toggle")) {
+    if ((e.target.className = "right_home")) {
       for (let i = 0; i < 3; i++) {
         if (this.state.isOurTheme[i]) {
           let j = i;
@@ -398,16 +395,40 @@ class Calculator extends React.Component {
             case 0:
               this.setState({
                 isOurTheme: [false, true, false],
+                dataToggle: "1",
+                dataReset: "1",
+                dataResult: "1",
+                dataDelete: "1",
+                dataOperation: "1",
+                dataNumber: "1",
+                dataResultContainer: "1",
+                dataButtonContainer: "1",
               });
               break;
             case 1:
               this.setState({
                 isOurTheme: [false, false, true],
+                dataToggle: "2",
+                dataReset: "2",
+                dataResult: "2",
+                dataDelete: "2",
+                dataOperation: "2",
+                dataNumber: "2",
+                dataResultContainer: "2",
+                dataButtonContainer: "2",
               });
               break;
             case 2:
               this.setState({
                 isOurTheme: [true, false, false],
+                dataToggle: "0",
+                dataReset: "0",
+                dataResult: "0",
+                dataDelete: "0",
+                dataOperation: "0",
+                dataNumber: "0",
+                dataResultContainer: "0",
+                dataButtonContainer: "0",
               });
               break;
             default:
@@ -421,8 +442,31 @@ class Calculator extends React.Component {
     return (
       <div className="calc_container">
         <div className="calc_content">
-          <CalculatorLabel themeCalc={this.handleTheme} />
-          <CalculatorPanel themeButton={this.handleTheme} />
+          <CalculatorLabel
+            onClick={this.handleTheme}
+            dataToggle={this.state.dataToggle}
+          />
+          <CalculatorPanel
+            onClick={this.handleTheme}
+            dataResult={this.state.dataResult}
+            dataDelete={this.state.dataDelete}
+            dataReset={this.state.dataReset}
+            dataOperation={this.state.dataOperation}
+            dataNumber={this.state.dataNumber}
+            dataResultContainer={this.state.dataResultContainer}
+            dataButtonContainer={this.state.dataButtonContainer}
+          />
+        </div>
+        <div class="attribution">
+          Challenge by
+          <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">
+            Frontend Mentor
+          </a>
+          . Coded by
+          <a href="https://www.frontendmentor.io/profile/BeinRain06">
+            BeinRain06
+          </a>
+          .
         </div>
       </div>
     );
