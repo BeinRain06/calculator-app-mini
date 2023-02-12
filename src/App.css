@@ -187,6 +187,7 @@
     align-items: right;
     background: var(--screen-background1);
     color: var(--white);
+    max-width: 100%;
     width: 100%;
     padding: 1.8rem;
     /* margin: 1rem auto; */
