@@ -1,10 +1,11 @@
 import React from "react";
 import "./App.css";
 
-class CalculatorPanel extends React.Component {
+class Calculator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      /* calculator state */
       previousNumber: "",
       currentNumber: "",
       result: 0,
@@ -14,7 +15,22 @@ class CalculatorPanel extends React.Component {
       deleteCasePreviousNumber: true,
       deleteCaseCurrentNumber: false,
       noOPValidedAgain: false,
+
+      /*  theme state */
+      isOurTheme: [true, false, false],
+      tmpTheme: "toggle",
+      dataToggle: "0",
+      dataReset: "0",
+      dataResult: "0",
+      dataDelete: "0",
+      dataOperation: "0",
+      dataNumber: "0",
+      dataResultContainer: "0",
+      dataButtonContainer: "0",
+      dataContainer: "0",
     };
+
+    /*  function calculator */
 
     this.updateAndDisplayNumber = this.updateAndDisplayNumber.bind(this);
 
@@ -27,7 +43,13 @@ class CalculatorPanel extends React.Component {
     this.handleDeletion = this.handleDeletion.bind(this);
 
     this.handleReset = this.handleReset.bind(this);
+
+    /*  function color background theme */
+
+    this.handleTheme = this.handleTheme.bind(this);
   }
+
+  /* Calculator */
 
   expectReset() {
     if (this.state.noOPValidedAgain) {
@@ -213,181 +235,13 @@ class CalculatorPanel extends React.Component {
     }
   }
 
-  render() {
-    return (
-      <div className="calc_main_content">
-        <div
-          className="result_container"
-          data-result-container={this.props.dataResultContainer}
-        >
-          <p className="result">{this.state.result}</p>
-        </div>
-
-        <div
-          className="button_container"
-          onClick={this.updateAndDisplayNumber}
-          data-btn-container={this.props.dataButtonContainer}
-        >
-          <div className="button_grid" onClick={this.handleOperation}>
-            <input
-              type="button"
-              value="7"
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input
-              type="button"
-              value="8"
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input
-              type="button"
-              value="9"
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input
-              type="button"
-              value="DEL"
-              className="single_btn btn_del"
-              onClick={this.handleDeletion}
-              data-delete={this.props.dataDelete}
-            />
-            <input
-              type="button"
-              value="4"
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input
-              type="button"
-              value="5"
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input
-              type="button"
-              value="6"
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input
-              type="button"
-              value="+"
-              className="single_btn btn_operating"
-              data-operation={this.props.dataOperation}
-            />
-            <input
-              type="button"
-              value="1"
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input type="button" value="2" className="single_btn btn_number" />
-            <input
-              type="button"
-              value="3"
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input
-              type="button"
-              value="-"
-              className="single_btn btn_operating"
-              data-operation={this.props.dataOperation}
-            />
-            <input
-              type="button"
-              value="."
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input
-              type="button"
-              value="0"
-              className="single_btn btn_number"
-              data-number={this.props.dataNumber}
-            />
-            <input
-              type="button"
-              value="/"
-              className="single_btn btn_operating"
-              data-operation={this.props.dataOperation}
-            />
-            <input
-              type="button"
-              value="x"
-              className="single_btn btn_operating"
-              data-operation={this.props.dataOperation}
-            />
-            <input
-              type="button"
-              value="RESET"
-              className="dual_btn btn_reset"
-              onClick={this.handleReset}
-              data-reset={this.props.dataReset}
-            />
-            <input
-              type="button"
-              value="="
-              className="dual_btn btn_result"
-              onClick={this.giveUsResult}
-              data-result={this.props.dataNumber}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-function CalculatorLabel(props) {
-  return (
-    <div className="home_title">
-      <div className="left_home">
-        <h3 className="logo">Calc</h3>
-      </div>
-      <div className="right_home">
-        <span className="theme">THEME</span>
-        <div className="toggle_box">
-          <div className="numeric_symbol_theme">
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-          </div>
-          <div id="toggle" className="toggle" data-toggle={props.dataToggle}>
-            <div className="circle"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-class Calculator extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOurTheme: [true, false, false],
-      tmpTheme: "toggle",
-      dataToggle: "0",
-      dataReset: "0",
-      dataResult: "0",
-      dataDelete: "0",
-      dataOperation: "0",
-      dataNumber: "0",
-      dataResultContainer: "0",
-      dataButtonContainer: "0",
-    };
-    this.handleTheme = this.handleTheme.bind(this);
-  }
+  /* Theme */
 
   handleTheme(e) {
     e.preventDefault();
     console.log(e.target);
 
-    if ((e.target.className = "right_home")) {
+    if ((e.target.id = "toggle")) {
       for (let i = 0; i < 3; i++) {
         if (this.state.isOurTheme[i]) {
           let j = i;
@@ -403,6 +257,7 @@ class Calculator extends React.Component {
                 dataNumber: "1",
                 dataResultContainer: "1",
                 dataButtonContainer: "1",
+                dataContainer: "1",
               });
               break;
             case 1:
@@ -416,6 +271,7 @@ class Calculator extends React.Component {
                 dataNumber: "2",
                 dataResultContainer: "2",
                 dataButtonContainer: "2",
+                dataContainer: "2",
               });
               break;
             case 2:
@@ -429,6 +285,7 @@ class Calculator extends React.Component {
                 dataNumber: "0",
                 dataResultContainer: "0",
                 dataButtonContainer: "0",
+                dataContainer: "0",
               });
               break;
             default:
@@ -438,24 +295,159 @@ class Calculator extends React.Component {
       }
     }
   }
+
   render() {
     return (
-      <div className="calc_container">
+      <div className="calc_container" data-container={this.state.dataContainer}>
         <div className="calc_content">
-          <CalculatorLabel
-            onClick={this.handleTheme}
-            dataToggle={this.state.dataToggle}
-          />
-          <CalculatorPanel
-            onClick={this.handleTheme}
-            dataResult={this.state.dataResult}
-            dataDelete={this.state.dataDelete}
-            dataReset={this.state.dataReset}
-            dataOperation={this.state.dataOperation}
-            dataNumber={this.state.dataNumber}
-            dataResultContainer={this.state.dataResultContainer}
-            dataButtonContainer={this.state.dataButtonContainer}
-          />
+          <div className="home_title">
+            <div className="left_home">
+              <h3 className="logo">Calc</h3>
+            </div>
+            <div className="right_home">
+              <span className="theme">THEME</span>
+              <div className="toggle_box">
+                <div className="numeric_symbol_theme">
+                  <span>1</span>
+                  <span>2</span>
+                  <span>3</span>
+                </div>
+                <div
+                  id="toggle"
+                  className="toggle"
+                  onClick={this.handleTheme}
+                  data-toggle={this.state.dataToggle}
+                >
+                  <div className="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="result_container"
+            data-result-container={this.state.dataResultContainer}
+          >
+            <p className="result">{this.state.result}</p>
+          </div>
+          <div
+            className="button_container"
+            onClick={this.updateAndDisplayNumber}
+            data-btn-container={this.state.dataButtonContainer}
+          >
+            <div className="button_grid" onClick={this.handleOperation}>
+              <input
+                type="button"
+                value="7"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="8"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="9"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="DEL"
+                className="single_btn btn_del"
+                onClick={this.handleDeletion}
+                data-delete={this.state.dataDelete}
+              />
+              <input
+                type="button"
+                value="4"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="5"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="6"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="+"
+                className="single_btn btn_operating"
+                data-operation={this.state.dataOperation}
+              />
+              <input
+                type="button"
+                value="1"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="2"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="3"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="-"
+                className="single_btn btn_operating"
+                data-operation={this.state.dataOperation}
+              />
+              <input
+                type="button"
+                value="."
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="0"
+                className="single_btn btn_number"
+                data-number={this.state.dataNumber}
+              />
+              <input
+                type="button"
+                value="/"
+                className="single_btn btn_operating"
+                data-operation={this.state.dataOperation}
+              />
+              <input
+                type="button"
+                value="x"
+                className="single_btn btn_operating"
+                data-operation={this.state.dataOperation}
+              />
+              <input
+                type="button"
+                value="RESET"
+                className="dual_btn btn_reset"
+                onClick={this.handleReset}
+                data-reset={this.state.dataReset}
+              />
+              <input
+                type="button"
+                value="="
+                className="dual_btn btn_result"
+                onClick={this.giveUsResult}
+                data-result={this.state.dataNumber}
+              />
+            </div>
+          </div>
         </div>
         <div class="attribution">
           Challenge by
